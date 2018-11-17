@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: product
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG
+      profile: dev
+      name: order
+    stream:
+      bindings:
+        output:
+          destination: mqTestDefault
+          contentType: text/plain
+        outputOrder:
+          destination: orderProcess
+          contentType: text/plain
+        warterOrderOutput:
+          destination: orderProcess
+          contentType: text/plain
+        milkOrderOutput:
+          destination: orderProcess
+          contentType: text/plain
+        orderInput:
+          destination: productProcess
+          contentType: application/json
+      rabbit:
+        bindings:
+          warterOrderOutput:
+            producer:
+              routing-key-expression: '''warterOrder'''
+          milkOrderOutput:
+            producer:
+              routing-key-expression: '''milkOrder'''
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug
